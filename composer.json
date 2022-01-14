@@ -1,0 +1,20 @@
+{
+    "name": "micro/framework-kernel",
+    "type": "library",
+    "description": "",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Micro\\Framework\\Kernel\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Stanislau.Komar",
+            "email": "stanislau_komar@epam.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+    }
+}
