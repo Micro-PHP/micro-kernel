@@ -9,6 +9,7 @@ use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
 use Micro\Framework\Kernel\Configuration\PluginConfiguration;
 use Micro\Framework\Kernel\Configuration\Resolver\PluginConfigurationClassResolver;
 use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
+use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 
 class Kernel implements KernelInterface
 {
@@ -23,15 +24,26 @@ class Kernel implements KernelInterface
     private bool $isTerminated;
 
     /**
-     * @param string[] $applicationPluginCollection
+     * @var ApplicationPluginInterface[]
+     */
+    private array $plugins;
+
+    /**
+     * @param array $applicationPluginCollection
+     * @param ApplicationConfigurationInterface $configuration
+     * @param Container|null $container
+     * @param PluginBootLoaderInterface[] $pluginBootLoaderCollection
      */
     public function __construct(
         private array $applicationPluginCollection,
         private ApplicationConfigurationInterface $configuration,
+        private array $pluginBootLoaderCollection,
         private ?Container $container = null
     ) {
         $this->isStarted = false;
         $this->isTerminated = false;
+
+        $this->plugins = [];
     }
 
     /**
@@ -43,7 +55,7 @@ class Kernel implements KernelInterface
             return;
         }
 
-        $this->bootPlugins();
+        $this->loadPlugins();
         $this->isStarted = true;
     }
 
@@ -74,13 +86,25 @@ class Kernel implements KernelInterface
      * @param  string $applicationPluginClass
      * @return void
      */
-    protected function bootPlugin(string $applicationPluginClass): void
+    protected function loadPlugin(string $applicationPluginClass): void
     {
         $pluginConfiguration = $this->resolvePluginConfiguration($applicationPluginClass);
         /*** @var ApplicationPluginInterface $plugin */
         $plugin = new $applicationPluginClass($pluginConfiguration);
 
-        $plugin->provideDependencies($this->container());
+        foreach ($this->pluginBootLoaderCollection as $bootLoader) {
+            $bootLoader->boot($plugin);
+        }
+
+        $this->plugins[] = $plugin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function plugins(): array
+    {
+        return $this->plugins;
     }
 
     /**
@@ -107,10 +131,10 @@ class Kernel implements KernelInterface
     /**
      * @return void
      */
-    protected function bootPlugins(): void
+    protected function loadPlugins(): void
     {
         foreach ($this->applicationPluginCollection as $applicationPlugin) {
-            $this->bootPlugin($applicationPlugin);
+            $this->loadPlugin($applicationPlugin);
         }
     }
 }

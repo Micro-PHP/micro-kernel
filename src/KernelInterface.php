@@ -3,6 +3,7 @@
 namespace Micro\Framework\Kernel;
 
 use Micro\Component\DependencyInjection\Container;
+use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
 
 interface KernelInterface
 {
@@ -27,5 +28,8 @@ interface KernelInterface
      */
     public function terminate(): void;
 
-
+    /**
+     * @return ApplicationPluginInterface[]
+     */
+    public function plugins(): array;
 }
