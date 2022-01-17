@@ -7,19 +7,31 @@ namespace Micro\Framework\Kernel;
 use Micro\Component\DependencyInjection\Container;
 use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
 use Micro\Framework\Kernel\Configuration\PluginConfiguration;
-use Micro\Framework\Kernel\Configuration\PluginConfigurationClassResolver;
+use Micro\Framework\Kernel\Configuration\Resolver\PluginConfigurationClassResolver;
 use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
 
-class Kernel
+class Kernel implements KernelInterface
 {
+    /**
+     * @var bool
+     */
+    private bool $isStarted;
+
+    /**
+     * @var bool
+     */
+    private bool $isTerminated;
+
     /**
      * @param string[] $applicationPluginCollection
      */
     public function __construct(
-    private array $applicationPluginCollection,
-    private ApplicationConfigurationInterface $configuration,
-    private ?Container $container = null
+        private array $applicationPluginCollection,
+        private ApplicationConfigurationInterface $configuration,
+        private ?Container $container = null
     ) {
+        $this->isStarted = false;
+        $this->isTerminated = false;
     }
 
     /**
@@ -27,7 +39,12 @@ class Kernel
      */
     public function run(): void
     {
+        if($this->isStarted) {
+            return;
+        }
+
         $this->bootPlugins();
+        $this->isStarted = true;
     }
 
     /**
@@ -35,16 +52,19 @@ class Kernel
      */
     public function terminate(): void
     {
+        if(!$this->isStarted || $this->isTerminated) {
+            return;
+        }
+
+        $this->isTerminated = true;
     }
 
     /**
-     * @return void
+     * @return Container
      */
-    private function bootPlugins(): void
+    public function container(): Container
     {
-        foreach ($this->applicationPluginCollection as $applicationPlugin) {
-            $this->bootPlugin($applicationPlugin);
-        }
+        return $this->container;
     }
 
     /**
@@ -60,7 +80,16 @@ class Kernel
         /*** @var ApplicationPluginInterface $plugin */
         $plugin = new $applicationPluginClass($pluginConfiguration);
 
-        $plugin->provideDependencies($this->getContainer());
+        $plugin->provideDependencies($this->container());
+    }
+
+    /**
+     * @param string $applicationPluginClass
+     * @return PluginConfigurationClassResolver
+     */
+    protected function createPluginConfigurationResolver(string $applicationPluginClass): PluginConfigurationClassResolver
+    {
+        return new PluginConfigurationClassResolver($applicationPluginClass, $this->configuration);
     }
 
     /**
@@ -70,22 +99,18 @@ class Kernel
      * @param  string $applicationPluginClass
      * @return void
      */
-    private function resolvePluginConfiguration(string $applicationPluginClass): PluginConfiguration
+    protected function resolvePluginConfiguration(string $applicationPluginClass): PluginConfiguration
     {
-        $resolver = new PluginConfigurationClassResolver($applicationPluginClass, $this->configuration);
-
-        return $resolver->resolve();
+        return $this->createPluginConfigurationResolver($applicationPluginClass)->resolve();
     }
 
     /**
-     * @return Container
+     * @return void
      */
-    private function getContainer(): Container
+    protected function bootPlugins(): void
     {
-        if(!$this->container) {
-            $this->container = new Container();
+        foreach ($this->applicationPluginCollection as $applicationPlugin) {
+            $this->bootPlugin($applicationPlugin);
         }
-
-        return $this->container;
     }
 }

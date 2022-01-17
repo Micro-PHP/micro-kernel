@@ -1,10 +1,10 @@
 <?php
 
-namespace Micro\Framework\Kernel\Configuration;
+namespace Micro\Framework\Kernel\Configuration\Resolver;
 
-use Micro\Framework\Kernel\Configuration\Resolver\PluginConfigurationClassResolverInterface;
-use Micro\Framework\Kernel\Configuration\Resolver\PluginNameResolver;
-use Micro\Framework\Kernel\Configuration\Resolver\PluginNameShortResolver;
+
+use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
+use Micro\Framework\Kernel\Configuration\PluginConfiguration;
 
 class PluginConfigurationClassResolver
 {
@@ -21,8 +21,7 @@ class PluginConfigurationClassResolver
         private string $pluginClass,
         private ApplicationConfigurationInterface $applicationConfiguration
     ) {
-        $this->resolvers[] = new PluginNameResolver();
-        $this->resolvers[] = new PluginNameShortResolver();
+        $this->resolvers = $this->getPluginClassResolvers();
     }
 
     /**
@@ -56,5 +55,16 @@ class PluginConfigurationClassResolver
         $configClass = $configClasses[0] ?? $configClassDefault;
 
         return new $configClass($this->applicationConfiguration);
+    }
+
+    /**
+     * @return PluginConfigurationClassResolver[]
+     */
+    protected function getPluginClassResolvers(): array
+    {
+        return [
+            new PluginNameResolver(),
+            new PluginNameShortResolver(),
+        ];
     }
 }
