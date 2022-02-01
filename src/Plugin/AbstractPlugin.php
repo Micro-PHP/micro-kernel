@@ -4,6 +4,7 @@ namespace Micro\Framework\Kernel\Plugin;
 
 use Micro\Component\DependencyInjection\Container;
 use Micro\Framework\Kernel\Configuration\PluginConfiguration;
+use Micro\Framework\Kernel\Configuration\PluginConfigurationInterface;
 
 abstract class AbstractPlugin implements ApplicationPluginInterface
 {
@@ -13,6 +14,14 @@ abstract class AbstractPlugin implements ApplicationPluginInterface
 
     public function provideDependencies(Container $container): void
     {
+    }
+
+    /**
+     * @return PluginConfigurationInterface
+     */
+    protected function configuration(): PluginConfigurationInterface
+    {
+        return $this->configuration;
     }
 
     /**

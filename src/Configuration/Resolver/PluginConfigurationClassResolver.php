@@ -14,12 +14,12 @@ class PluginConfigurationClassResolver
     private array $resolvers;
 
     /**
-     * @param string $pluginClass
+     * @param string                            $pluginClass
      * @param ApplicationConfigurationInterface $applicationConfiguration
      */
     public function __construct(
-        private string $pluginClass,
-        private ApplicationConfigurationInterface $applicationConfiguration
+    private string $pluginClass,
+    private ApplicationConfigurationInterface $applicationConfiguration
     ) {
         $this->resolvers = $this->getPluginClassResolvers();
     }

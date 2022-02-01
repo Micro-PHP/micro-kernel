@@ -38,7 +38,7 @@ class KernelBuilder
     }
 
     /**
-     * @param array $applicationPluginCollection
+     * @param  array $applicationPluginCollection
      * @return $this
      */
     public function setApplicationPlugins(array $applicationPluginCollection): self
@@ -49,7 +49,7 @@ class KernelBuilder
     }
 
     /**
-     * @param PluginBootLoaderInterface $bootLoader
+     * @param  PluginBootLoaderInterface $bootLoader
      * @return $this
      */
     public function addBootLoader(PluginBootLoaderInterface $bootLoader): self
@@ -60,7 +60,7 @@ class KernelBuilder
     }
 
     /**
-     * @param PluginBootLoaderInterface[] $bootLoaderCollection
+     * @param  PluginBootLoaderInterface[] $bootLoaderCollection
      * @return $this
      */
     public function setBootLoaders(array $bootLoaderCollection): self
@@ -73,7 +73,7 @@ class KernelBuilder
     }
 
     /**
-     * @param ApplicationConfigurationInterface $configuration
+     * @param  ApplicationConfigurationInterface $configuration
      * @return $this
      */
     public function setApplicationConfiguration(ApplicationConfigurationInterface $configuration): self
@@ -84,7 +84,7 @@ class KernelBuilder
     }
 
     /**
-     * @param Container $container
+     * @param  Container $container
      * @return $this
      */
     public function setContainer(Container $container): self
