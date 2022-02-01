@@ -29,16 +29,16 @@ class Kernel implements KernelInterface
     private array $plugins;
 
     /**
-     * @param array $applicationPluginCollection
+     * @param array                             $applicationPluginCollection
      * @param ApplicationConfigurationInterface $configuration
-     * @param Container|null $container
-     * @param PluginBootLoaderInterface[] $pluginBootLoaderCollection
+     * @param Container|null                    $container
+     * @param PluginBootLoaderInterface[]       $pluginBootLoaderCollection
      */
     public function __construct(
-        private array $applicationPluginCollection,
-        private ApplicationConfigurationInterface $configuration,
-        private array $pluginBootLoaderCollection,
-        private ?Container $container = null
+    private array $applicationPluginCollection,
+    private ApplicationConfigurationInterface $configuration,
+    private array $pluginBootLoaderCollection,
+    private ?Container $container = null
     ) {
         $this->isStarted = false;
         $this->isTerminated = false;
@@ -89,7 +89,9 @@ class Kernel implements KernelInterface
     protected function loadPlugin(string $applicationPluginClass): void
     {
         $pluginConfiguration = $this->resolvePluginConfiguration($applicationPluginClass);
-        /*** @var ApplicationPluginInterface $plugin */
+        /***
+ * @var ApplicationPluginInterface $plugin 
+*/
         $plugin = new $applicationPluginClass($pluginConfiguration);
 
         foreach ($this->pluginBootLoaderCollection as $bootLoader) {
@@ -108,7 +110,7 @@ class Kernel implements KernelInterface
     }
 
     /**
-     * @param string $applicationPluginClass
+     * @param  string $applicationPluginClass
      * @return PluginConfigurationClassResolver
      */
     protected function createPluginConfigurationResolver(string $applicationPluginClass): PluginConfigurationClassResolver
