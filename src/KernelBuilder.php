@@ -33,7 +33,7 @@ class KernelBuilder
 
     public function __construct()
     {
-        $this->pluginCollection = [];
+        $this->pluginCollection           = [];
         $this->bootLoaderPluginCollection = [];
     }
 

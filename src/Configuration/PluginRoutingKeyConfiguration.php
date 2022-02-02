@@ -10,8 +10,9 @@ class PluginRoutingKeyConfiguration extends PluginConfiguration
      */
     public function __construct(
         ApplicationConfigurationInterface $configuration,
-        protected string $configRoutingKey
-    ) {
+    protected string $configRoutingKey
+    )
+    {
         parent::__construct($configuration);
     }
 
@@ -25,16 +26,17 @@ class PluginRoutingKeyConfiguration extends PluginConfiguration
     }
 
     /**
-     * @param  string $key
-     * @param  $default
+     * @param string $key
+     * @param $default
+     * @param bool $nullable
      * @return mixed
      */
-    protected function get(string $key, $default = null): mixed
+    protected function get(string $key, $default = null, bool $nullable = true): mixed
     {
         return $this->configuration->get(
             $this->cfg($key),
-            $default
+            $default,
+            $nullable
         );
     }
 }
-
