@@ -2,8 +2,6 @@
 
 namespace Micro\Framework\Kernel;
 
-
-
 use Micro\Component\DependencyInjection\Container;
 use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
 use Micro\Framework\Kernel\Configuration\PluginConfiguration;
@@ -39,8 +37,9 @@ class Kernel implements KernelInterface
     private ApplicationConfigurationInterface $configuration,
     private array $pluginBootLoaderCollection,
     private ?Container $container = null
-    ) {
-        $this->isStarted = false;
+    )
+    {
+        $this->isStarted    = false;
         $this->isTerminated = false;
 
         $this->plugins = [];

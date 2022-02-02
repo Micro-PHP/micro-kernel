@@ -2,7 +2,6 @@
 
 namespace Micro\Framework\Kernel\Configuration\Resolver;
 
-
 use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
 use Micro\Framework\Kernel\Configuration\PluginConfiguration;
 
@@ -20,7 +19,8 @@ class PluginConfigurationClassResolver
     public function __construct(
     private string $pluginClass,
     private ApplicationConfigurationInterface $applicationConfiguration
-    ) {
+    )
+    {
         $this->resolvers = $this->getPluginClassResolvers();
     }
 
@@ -30,7 +30,7 @@ class PluginConfigurationClassResolver
     public function resolve(): PluginConfiguration
     {
         $configClassDefault = PluginConfiguration::class;
-        $configClasses = [];
+        $configClasses      = [];
 
         foreach ($this->resolvers as $resolver) {
             $configClass = $resolver->resolve($this->pluginClass);
