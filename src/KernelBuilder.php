@@ -17,9 +17,9 @@ class KernelBuilder
     private array $pluginCollection;
 
     /**
-     * @var ApplicationConfigurationInterface
+     * @var ApplicationConfigurationInterface|null
      */
-    private ApplicationConfigurationInterface $configuration;
+    private ?ApplicationConfigurationInterface $configuration;
 
     /**
      * @var PluginBootLoaderInterface[]
@@ -27,14 +27,16 @@ class KernelBuilder
     private array $bootLoaderPluginCollection;
 
     /**
-     * @var Container
+     * @var Container|null
      */
-    private Container $container;
+    private ?Container $container;
 
     public function __construct()
     {
         $this->pluginCollection           = [];
         $this->bootLoaderPluginCollection = [];
+        $this->configuration              = null;
+        $this->container                  = null;
     }
 
     /**

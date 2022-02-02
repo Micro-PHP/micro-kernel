@@ -5,10 +5,9 @@ namespace Micro\Framework\Kernel\Configuration;
 interface ApplicationConfigurationInterface
 {
     /**
-     * @param string $key
-     * @param $default
-     * @param bool $nullable
+     * @param  string $key
+     * @param  mixed $default
      * @return mixed
      */
-    public function get(string $key, $default = null, bool $nullable = true): mixed;
+    public function get(string $key, mixed $default = null): mixed;
 }

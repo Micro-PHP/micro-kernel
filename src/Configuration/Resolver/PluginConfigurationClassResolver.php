@@ -4,14 +4,10 @@ namespace Micro\Framework\Kernel\Configuration\Resolver;
 
 use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
 use Micro\Framework\Kernel\Configuration\PluginConfiguration;
+use Micro\Framework\Kernel\Configuration\PluginConfigurationInterface;
 
 class PluginConfigurationClassResolver
 {
-    /**
-     * @var PluginConfigurationClassResolverInterface[]
-     */
-    private array $resolvers;
-
     /**
      * @param string                            $pluginClass
      * @param ApplicationConfigurationInterface $applicationConfiguration
@@ -21,18 +17,17 @@ class PluginConfigurationClassResolver
     private ApplicationConfigurationInterface $applicationConfiguration
     )
     {
-        $this->resolvers = $this->getPluginClassResolvers();
     }
 
     /**
-     * @return PluginConfiguration
+     * @return PluginConfigurationInterface
      */
-    public function resolve(): PluginConfiguration
+    public function resolve(): PluginConfigurationInterface
     {
         $configClassDefault = PluginConfiguration::class;
         $configClasses      = [];
 
-        foreach ($this->resolvers as $resolver) {
+        foreach ($this->getPluginClassResolvers() as $resolver) {
             $configClass = $resolver->resolve($this->pluginClass);
 
             if(!class_exists($configClass)) {
@@ -51,14 +46,14 @@ class PluginConfigurationClassResolver
                 )
             );
         }
-
+        /** @var class-string<PluginConfigurationInterface> $configClass */
         $configClass = $configClasses[0] ?? $configClassDefault;
 
         return new $configClass($this->applicationConfiguration);
     }
 
     /**
-     * @return PluginConfigurationClassResolver[]
+     * @return PluginConfigurationClassResolverInterface[]
      */
     protected function getPluginClassResolvers(): array
     {
