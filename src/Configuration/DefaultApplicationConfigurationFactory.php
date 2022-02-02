@@ -2,8 +2,6 @@
 
 namespace Micro\Framework\Kernel\Configuration;
 
-use JetBrains\PhpStorm\Pure;
-
 class DefaultApplicationConfigurationFactory implements ApplicationConfigurationFactoryInterface
 {
     /**
@@ -16,7 +14,7 @@ class DefaultApplicationConfigurationFactory implements ApplicationConfiguration
     /**
      * @return ApplicationConfigurationInterface
      */
-    #[Pure] public function create(): ApplicationConfigurationInterface
+    public function create(): ApplicationConfigurationInterface
     {
         return new DefaultApplicationConfiguration($this->configuration);
     }

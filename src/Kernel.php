@@ -5,6 +5,7 @@ namespace Micro\Framework\Kernel;
 use Micro\Component\DependencyInjection\Container;
 use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
 use Micro\Framework\Kernel\Configuration\PluginConfiguration;
+use Micro\Framework\Kernel\Configuration\PluginConfigurationInterface;
 use Micro\Framework\Kernel\Configuration\Resolver\PluginConfigurationClassResolver;
 use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
@@ -79,18 +80,13 @@ class Kernel implements KernelInterface
     }
 
     /**
-     * @template    T of \Micro\Framework\Kernel\Plugin\ApplicationPluginInterface
-     * @psalm-param class-string<T>
-     *
      * @param  string $applicationPluginClass
      * @return void
      */
     protected function loadPlugin(string $applicationPluginClass): void
     {
         $pluginConfiguration = $this->resolvePluginConfiguration($applicationPluginClass);
-        /***
- * @var ApplicationPluginInterface $plugin 
-*/
+        /** @var ApplicationPluginInterface $plugin */
         $plugin = new $applicationPluginClass($pluginConfiguration);
 
         foreach ($this->pluginBootLoaderCollection as $bootLoader) {
@@ -118,13 +114,10 @@ class Kernel implements KernelInterface
     }
 
     /**
-     * @template    T of \Micro\Framework\Kernel\Plugin\ApplicationPluginInterface
-     * @psalm-param class-string<T>
-     *
      * @param  string $applicationPluginClass
-     * @return void
+     * @return PluginConfigurationInterface
      */
-    protected function resolvePluginConfiguration(string $applicationPluginClass): PluginConfiguration
+    protected function resolvePluginConfiguration(string $applicationPluginClass): PluginConfigurationInterface
     {
         return $this->createPluginConfigurationResolver($applicationPluginClass)->resolve();
     }

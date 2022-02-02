@@ -16,8 +16,12 @@ class PluginConfiguration implements PluginConfigurationInterface
      * @param  string $separator
      * @return array
      */
-    protected function explodeStringToArray(string $list, string $separator=','): array
+    protected function explodeStringToArray(string $list, string $separator = ','): array
     {
+        if($separator === '') {
+            return [$list];
+        }
+
         $itemsColl = explode($separator, $list);
 
         return array_map('trim', $itemsColl);

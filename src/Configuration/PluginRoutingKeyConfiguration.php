@@ -26,12 +26,12 @@ class PluginRoutingKeyConfiguration extends PluginConfiguration
     }
 
     /**
-     * @param string $key
-     * @param $default
+     * @param  string $key
+     * @param  mixed $default
      * @param bool $nullable
      * @return mixed
      */
-    protected function get(string $key, $default = null, bool $nullable = true): mixed
+    protected function get(string $key, mixed $default = null, bool $nullable = true): mixed
     {
         return $this->configuration->get(
             $this->cfg($key),
