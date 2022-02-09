@@ -99,9 +99,13 @@ class Kernel implements KernelInterface
     /**
      * {@inheritDoc}
      */
-    public function plugins(): array
+    public function plugins(string $interfaceInherited = null): iterable
     {
-        return $this->plugins;
+        foreach ($this->plugins as $plugin) {
+            if(!$interfaceInherited || ($plugin instanceof $interfaceInherited)) {
+                yield $plugin;
+            }
+        }
     }
 
     /**

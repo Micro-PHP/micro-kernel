@@ -14,7 +14,7 @@ class PluginConfiguration implements PluginConfigurationInterface
     /**
      * @param  string $list
      * @param  string $separator
-     * @return array
+     * @return string[]
      */
     protected function explodeStringToArray(string $list, string $separator = ','): array
     {

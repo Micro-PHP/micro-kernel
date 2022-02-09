@@ -29,7 +29,9 @@ interface KernelInterface
     public function terminate(): void;
 
     /**
-     * @return ApplicationPluginInterface[]
+     * @param string|null $interfaceInherited
+     *
+     * @return iterable
      */
-    public function plugins(): array;
+    public function plugins(string $interfaceInherited = null): iterable;
 }
