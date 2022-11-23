@@ -31,7 +31,7 @@ interface KernelInterface
     /**
      * @param string|null $interfaceInherited
      *
-     * @return iterable
+     * @return iterable<ApplicationPluginInterface>
      */
     public function plugins(string $interfaceInherited = null): iterable;
 }

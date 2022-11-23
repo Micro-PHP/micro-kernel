@@ -28,7 +28,7 @@ class DefaultApplicationConfiguration implements ApplicationConfigurationInterfa
 
         $value = $this->getValue($key, $default);
 
-        if($nullable === false && !$value) {
+        if($nullable === false && !$value && !is_numeric($value)) {
             throw new InvalidConfigurationException(sprintf('Configuration key "%s" can not be NULL', $key));
         }
 
