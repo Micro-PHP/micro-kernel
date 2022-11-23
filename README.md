@@ -1,4 +1,4 @@
->**:heavy_exclamation_mark: Basic container implementation with the ability to inject dependencies**
+# Micro Framework - The minimum kernel for application initialization.
 
 ### Requirements
 
@@ -6,7 +6,7 @@ PHP  >= 8.0.0
 
 ### How to use the library
 
-Add the latest version of MicroDependencyInjection into your project by using Composer or manually:
+Add the latest version of micro/kernel into your project by using Composer or manually:
 
 __Using Composer (Recommended)__
 
