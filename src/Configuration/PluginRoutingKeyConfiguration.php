@@ -10,7 +10,7 @@ class PluginRoutingKeyConfiguration extends PluginConfiguration
      */
     public function __construct(
         ApplicationConfigurationInterface $configuration,
-    protected string $configRoutingKey
+        protected readonly string $configRoutingKey
     )
     {
         parent::__construct($configuration);

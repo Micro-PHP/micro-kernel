@@ -7,17 +7,21 @@ class PluginConfiguration implements PluginConfigurationInterface
     /**
      * @param ApplicationConfigurationInterface $configuration
      */
-    public function __construct(protected ApplicationConfigurationInterface $configuration)
+    public function __construct(protected readonly ApplicationConfigurationInterface $configuration)
     {
     }
 
     /**
-     * @param  string $list
+     * @param  string|array $list
      * @param  string $separator
      * @return string[]
      */
-    protected function explodeStringToArray(string $list, string $separator = ','): array
+    protected function explodeStringToArray(string|array $list, string $separator = ','): array
     {
+        if(is_array($list)) {
+            return $list;
+        }
+
         if($separator === '') {
             return [$list];
         }

@@ -8,7 +8,7 @@ use Micro\Framework\Kernel\Configuration\PluginConfigurationInterface;
 
 abstract class AbstractPlugin implements ApplicationPluginInterface
 {
-    public function __construct(protected PluginConfiguration $configuration)
+    public function __construct(protected readonly PluginConfiguration $configuration)
     {
     }
 
