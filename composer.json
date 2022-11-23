@@ -2,7 +2,7 @@
     "name": "micro/kernel",
     "type": "library",
     "description": "",
-    "version": "0.1",
+    "version": "1.0",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -16,6 +16,8 @@
         }
     ],
     "require": {
-        "php": ">=8.0"
+        "php": ">=8.0",
+        "micro/dependency-injection": "^1",
+        "micro/event-emitter": "^1"
     }
 }
