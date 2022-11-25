@@ -3,7 +3,6 @@
 namespace Micro\Framework\Kernel;
 
 use Micro\Component\DependencyInjection\Container;
-use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
 
 interface KernelInterface
 {
@@ -31,7 +30,7 @@ interface KernelInterface
     /**
      * @param string|null $interfaceInherited
      *
-     * @return iterable<ApplicationPluginInterface>
+     * @return iterable<object>
      */
     public function plugins(string $interfaceInherited = null): iterable;
 }

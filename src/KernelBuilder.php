@@ -5,14 +5,13 @@ namespace Micro\Framework\Kernel;
 use Micro\Component\DependencyInjection\Container;
 use Micro\Framework\Kernel\Container\ApplicationContainerFactoryInterface;
 use Micro\Framework\Kernel\Container\Impl\ApplicationContainerFactory;
-use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 use Psr\Container\ContainerInterface;
 
 class KernelBuilder
 {
     /**
-     * @var iterable<ApplicationPluginInterface>
+     * @var iterable<object>
      */
     private iterable $pluginCollection;
 

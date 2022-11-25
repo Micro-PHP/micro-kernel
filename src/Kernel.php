@@ -3,7 +3,6 @@
 namespace Micro\Framework\Kernel;
 
 use Micro\Component\DependencyInjection\Container;
-use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 
 class Kernel implements KernelInterface
@@ -19,7 +18,7 @@ class Kernel implements KernelInterface
     private bool $isTerminated;
 
     /**
-     * @var ApplicationPluginInterface[]
+     * @var object[]
      */
     private array $plugins;
 
