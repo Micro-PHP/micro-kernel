@@ -3,10 +3,6 @@
 namespace Micro\Framework\Kernel;
 
 use Micro\Component\DependencyInjection\Container;
-use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
-use Micro\Framework\Kernel\Configuration\PluginConfiguration;
-use Micro\Framework\Kernel\Configuration\PluginConfigurationInterface;
-use Micro\Framework\Kernel\Configuration\Resolver\PluginConfigurationClassResolver;
 use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 
@@ -29,15 +25,13 @@ class Kernel implements KernelInterface
 
     /**
      * @param array                             $applicationPluginCollection
-     * @param ApplicationConfigurationInterface $configuration
      * @param Container|null                    $container
      * @param PluginBootLoaderInterface[]       $pluginBootLoaderCollection
      */
     public function __construct(
-    private array $applicationPluginCollection,
-    private ApplicationConfigurationInterface $configuration,
-    private array $pluginBootLoaderCollection,
-    private ?Container $container = null
+        private readonly array $applicationPluginCollection,
+        private readonly iterable $pluginBootLoaderCollection,
+        private readonly ?Container $container = null
     )
     {
         $this->isStarted    = false;
@@ -85,9 +79,7 @@ class Kernel implements KernelInterface
      */
     protected function loadPlugin(string $applicationPluginClass): void
     {
-        $pluginConfiguration = $this->resolvePluginConfiguration($applicationPluginClass);
-        /** @var ApplicationPluginInterface $plugin */
-        $plugin = new $applicationPluginClass($pluginConfiguration);
+        $plugin = new $applicationPluginClass();
 
         foreach ($this->pluginBootLoaderCollection as $bootLoader) {
             $bootLoader->boot($plugin);
@@ -106,24 +98,6 @@ class Kernel implements KernelInterface
                 yield $plugin;
             }
         }
-    }
-
-    /**
-     * @param  string $applicationPluginClass
-     * @return PluginConfigurationClassResolver
-     */
-    protected function createPluginConfigurationResolver(string $applicationPluginClass): PluginConfigurationClassResolver
-    {
-        return new PluginConfigurationClassResolver($applicationPluginClass, $this->configuration);
-    }
-
-    /**
-     * @param  string $applicationPluginClass
-     * @return PluginConfigurationInterface
-     */
-    protected function resolvePluginConfiguration(string $applicationPluginClass): PluginConfigurationInterface
-    {
-        return $this->createPluginConfigurationResolver($applicationPluginClass)->resolve();
     }
 
     /**

@@ -3,28 +3,23 @@
 namespace Micro\Framework\Kernel;
 
 use Micro\Component\DependencyInjection\Container;
-use Micro\Framework\Kernel\Configuration\ApplicationConfigurationInterface;
 use Micro\Framework\Kernel\Container\ApplicationContainerFactoryInterface;
 use Micro\Framework\Kernel\Container\Impl\ApplicationContainerFactory;
 use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
+use Psr\Container\ContainerInterface;
 
 class KernelBuilder
 {
     /**
-     * @var ApplicationPluginInterface[]
+     * @var iterable<ApplicationPluginInterface>
      */
-    private array $pluginCollection;
+    private iterable $pluginCollection;
 
     /**
-     * @var ApplicationConfigurationInterface|null
+     * @var iterable<PluginBootLoaderInterface>
      */
-    private ?ApplicationConfigurationInterface $configuration;
-
-    /**
-     * @var PluginBootLoaderInterface[]
-     */
-    private array $bootLoaderPluginCollection;
+    private iterable $bootLoaderPluginCollection;
 
     /**
      * @var Container|null
@@ -35,15 +30,15 @@ class KernelBuilder
     {
         $this->pluginCollection           = [];
         $this->bootLoaderPluginCollection = [];
-        $this->configuration              = null;
         $this->container                  = null;
     }
 
     /**
      * @param  array $applicationPluginCollection
+     *
      * @return $this
      */
-    public function setApplicationPlugins(array $applicationPluginCollection): self
+    public function setApplicationPlugins(iterable $applicationPluginCollection): self
     {
         $this->pluginCollection = $applicationPluginCollection;
 
@@ -65,7 +60,7 @@ class KernelBuilder
      * @param  PluginBootLoaderInterface[] $bootLoaderCollection
      * @return $this
      */
-    public function setBootLoaders(array $bootLoaderCollection): self
+    public function addBootLoaders(iterable $bootLoaderCollection): self
     {
         foreach ($bootLoaderCollection as $bootLoader) {
             $this->addBootLoader($bootLoader);
@@ -75,21 +70,11 @@ class KernelBuilder
     }
 
     /**
-     * @param  ApplicationConfigurationInterface $configuration
-     * @return $this
-     */
-    public function setApplicationConfiguration(ApplicationConfigurationInterface $configuration): self
-    {
-        $this->configuration = $configuration;
-
-        return $this;
-    }
-
-    /**
      * @param  Container $container
+     *
      * @return $this
      */
-    public function setContainer(Container $container): self
+    public function setContainer(ContainerInterface $container): self
     {
         $this->container = $container;
 
@@ -119,7 +104,6 @@ class KernelBuilder
     {
         return new Kernel(
             $this->pluginCollection,
-            $this->configuration,
             $this->bootLoaderPluginCollection,
             $this->container(),
         );
