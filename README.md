@@ -60,7 +60,7 @@ $kernel = $kernelBuilder
     ->setApplicationPlugins([
         TestPlugin::class
     ])
-    ->setBootLoaders([
+    ->addBootLoaders([
         new DependencyProviderLoader($container)
     ])
     ->build();

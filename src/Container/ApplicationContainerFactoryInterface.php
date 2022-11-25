@@ -2,12 +2,12 @@
 
 namespace Micro\Framework\Kernel\Container;
 
-use Micro\Component\DependencyInjection\Container;
+use Psr\Container\ContainerInterface;
 
 interface ApplicationContainerFactoryInterface
 {
     /**
-     * @return Container
+     * @return ContainerInterface
      */
-    public function create(): Container;
+    public function create(): ContainerInterface;
 }
