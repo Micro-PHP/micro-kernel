@@ -23,6 +23,11 @@ class Kernel implements KernelInterface
     private array $plugins;
 
     /**
+     * @var string[]
+     */
+    private array $pluginsLoaded;
+
+    /**
      * @param array                             $applicationPluginCollection
      * @param Container|null                    $container
      * @param PluginBootLoaderInterface[]       $pluginBootLoaderCollection
@@ -36,11 +41,12 @@ class Kernel implements KernelInterface
         $this->isStarted    = false;
         $this->isTerminated = false;
 
+        $this->pluginsLoaded = [];
         $this->plugins = [];
     }
 
     /**
-     * @return void
+     * {@inheritDoc}
      */
     public function run(): void
     {
@@ -53,7 +59,7 @@ class Kernel implements KernelInterface
     }
 
     /**
-     * @return void
+     * {@inheritDoc}
      */
     public function terminate(): void
     {
@@ -65,7 +71,7 @@ class Kernel implements KernelInterface
     }
 
     /**
-     * @return Container
+     * {@inheritDoc}
      */
     public function container(): Container
     {
@@ -73,11 +79,14 @@ class Kernel implements KernelInterface
     }
 
     /**
-     * @param  string $applicationPluginClass
-     * @return void
+     * {@inheritDoc}
      */
-    protected function loadPlugin(string $applicationPluginClass): void
+    public function loadPlugin(string $applicationPluginClass): void
     {
+        if (in_array($applicationPluginClass, $this->pluginsLoaded, true)) {
+            return;
+        }
+
         $plugin = new $applicationPluginClass();
 
         foreach ($this->pluginBootLoaderCollection as $bootLoader) {
@@ -85,6 +94,7 @@ class Kernel implements KernelInterface
         }
 
         $this->plugins[] = $plugin;
+        $this->pluginsLoaded[] = $applicationPluginClass;
     }
 
     /**
