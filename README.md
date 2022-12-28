@@ -28,32 +28,39 @@ include 'vendor/autoload.php';
 
 ```php
 
+use Micro\Framework\Kernel\Configuration\DefaultApplicationConfiguration;
+use Micro\Framework\Kernel\Plugin\PluginDependedInterface;
+use Micro\Framework\Kernel\Plugin\ApplicationPluginInterface;
+use Micro\Component\DependencyInjection\Container;
+use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
+use Micro\Framework\Kernel\KernelBuilder;
+
 // Create simple plugin
-class TestPlugin extends \Micro\Framework\Kernel\Plugin\AbstractPlugin
+class TestPlugin implements PluginDependedInterface
 {
-    public function provideDependencies(\Micro\Component\DependencyInjection\Container $container): void
+    public function provideDependencies(Container $container): void
     {
         print_r('Provided dependencies');
     }
 }
 
 // Create Dependency provider boot loader
-class DependencyProviderLoader implements \Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface
+class DependencyProviderLoader implements PluginBootLoaderInterface
 {
 
-    public function __construct(private readonly \Micro\Component\DependencyInjection\Container $container)
+    public function __construct(private readonly Container $container)
     {
     }
     
-    public function boot(\Micro\Framework\Kernel\Plugin\ApplicationPluginInterface $applicationPlugin): void
+    public function boot(ApplicationPluginInterface $applicationPlugin): void
     {
-        $applicationPlugin->provideDependencies($this->container);
+        $applicationPlugin->getDependedPlugins($this->container);
     }
 }
 
-$kernelBuilder = new \Micro\Framework\Kernel\KernelBuilder();
-$container = new \Micro\Component\DependencyInjection\Container();
-$configuration = new \Micro\Framework\Kernel\Configuration\DefaultApplicationConfiguration(['APP_ENV' => 'dev']);
+$kernelBuilder = new KernelBuilder();
+$container = new Container();
+$configuration = new DefaultApplicationConfiguration(['APP_ENV' => 'dev']);
 $kernel = $kernelBuilder
     ->setApplicationConfiguration($configuration)
     ->setContainer($container)
