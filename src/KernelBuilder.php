@@ -1,43 +1,47 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Framework\Kernel;
 
 use Micro\Component\DependencyInjection\Container;
-use Micro\Framework\Kernel\Container\ApplicationContainerFactoryInterface;
-use Micro\Framework\Kernel\Container\Impl\ApplicationContainerFactory;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 use Psr\Container\ContainerInterface;
 
 class KernelBuilder
 {
     /**
-     * @var iterable<object>
+     * @var class-string[]
      */
-    private iterable $pluginCollection;
+    private array $pluginCollection;
 
     /**
-     * @var iterable<PluginBootLoaderInterface>
+     * @var PluginBootLoaderInterface[]
      */
-    private iterable $bootLoaderPluginCollection;
+    private array $bootLoaderPluginCollection;
 
-    /**
-     * @var Container|null
-     */
     private ?Container $container;
 
     public function __construct()
     {
-        $this->pluginCollection           = [];
+        $this->pluginCollection = [];
         $this->bootLoaderPluginCollection = [];
-        $this->container                  = null;
+        $this->container = null;
     }
 
     /**
-     * @param  array $applicationPluginCollection
+     * @param class-string[] $applicationPluginCollection
      *
      * @return $this
      */
-    public function setApplicationPlugins(iterable $applicationPluginCollection): self
+    public function setApplicationPlugins(array $applicationPluginCollection): self
     {
         $this->pluginCollection = $applicationPluginCollection;
 
@@ -45,7 +49,6 @@ class KernelBuilder
     }
 
     /**
-     * @param  PluginBootLoaderInterface $bootLoader
      * @return $this
      */
     public function addBootLoader(PluginBootLoaderInterface $bootLoader): self
@@ -56,7 +59,8 @@ class KernelBuilder
     }
 
     /**
-     * @param  PluginBootLoaderInterface[] $bootLoaderCollection
+     * @param PluginBootLoaderInterface[] $bootLoaderCollection
+     *
      * @return $this
      */
     public function addBootLoaders(iterable $bootLoaderCollection): self
@@ -69,7 +73,7 @@ class KernelBuilder
     }
 
     /**
-     * @param  Container $container
+     * @param Container $container
      *
      * @return $this
      */
@@ -80,20 +84,9 @@ class KernelBuilder
         return $this;
     }
 
-    /**
-     * @return ApplicationContainerFactoryInterface
-     */
-    protected function createApplicationContainerFactory(): ApplicationContainerFactoryInterface
-    {
-        return new ApplicationContainerFactory();
-    }
-
-    /**
-     * @return Container
-     */
     protected function container(): Container
     {
-        return $this->container ?? $this->createApplicationContainerFactory()->create();
+        return $this->container ?? new Container();
     }
 
     /**

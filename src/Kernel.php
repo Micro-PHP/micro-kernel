@@ -1,5 +1,14 @@
 <?php
 
+/*
+ *  This file is part of the Micro framework package.
+ *
+ *  (c) Stanislau Komar <kost@micro-php.net>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ */
+
 namespace Micro\Framework\Kernel;
 
 use Micro\Component\DependencyInjection\Container;
@@ -7,15 +16,7 @@ use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 
 class Kernel implements KernelInterface
 {
-    /**
-     * @var bool
-     */
     private bool $isStarted;
-
-    /**
-     * @var bool
-     */
-    private bool $isTerminated;
 
     /**
      * @var object[]
@@ -23,23 +24,20 @@ class Kernel implements KernelInterface
     private array $plugins;
 
     /**
-     * @var string[]
+     * @var class-string[]
      */
     private array $pluginsLoaded;
 
     /**
-     * @param array                             $applicationPluginCollection
-     * @param Container|null                    $container
-     * @param PluginBootLoaderInterface[]       $pluginBootLoaderCollection
+     * @param class-string[]              $applicationPluginCollection
+     * @param PluginBootLoaderInterface[] $pluginBootLoaderCollection
      */
     public function __construct(
         private readonly array $applicationPluginCollection,
         private readonly iterable $pluginBootLoaderCollection,
-        private readonly ?Container $container = null
-    )
-    {
-        $this->isStarted    = false;
-        $this->isTerminated = false;
+        private readonly Container $container
+    ) {
+        $this->isStarted = false;
 
         $this->pluginsLoaded = [];
         $this->plugins = [];
@@ -50,24 +48,12 @@ class Kernel implements KernelInterface
      */
     public function run(): void
     {
-        if($this->isStarted) {
+        if ($this->isStarted) {
             return;
         }
 
         $this->loadPlugins();
         $this->isStarted = true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function terminate(): void
-    {
-        if(!$this->isStarted || $this->isTerminated) {
-            return;
-        }
-
-        $this->isTerminated = true;
     }
 
     /**
@@ -83,7 +69,7 @@ class Kernel implements KernelInterface
      */
     public function loadPlugin(string $applicationPluginClass): void
     {
-        if (in_array($applicationPluginClass, $this->pluginsLoaded, true)) {
+        if (\in_array($applicationPluginClass, $this->pluginsLoaded, true)) {
             return;
         }
 
@@ -100,18 +86,15 @@ class Kernel implements KernelInterface
     /**
      * {@inheritDoc}
      */
-    public function plugins(string $interfaceInherited = null): iterable
+    public function plugins(string $interfaceInherited = null): \Traversable
     {
         foreach ($this->plugins as $plugin) {
-            if(!$interfaceInherited || ($plugin instanceof $interfaceInherited)) {
+            if (!$interfaceInherited || ($plugin instanceof $interfaceInherited)) {
                 yield $plugin;
             }
         }
     }
 
-    /**
-     * @return void
-     */
     protected function loadPlugins(): void
     {
         foreach ($this->applicationPluginCollection as $applicationPlugin) {
