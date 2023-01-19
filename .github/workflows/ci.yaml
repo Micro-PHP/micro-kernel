@@ -46,3 +46,13 @@ jobs:
 
       - name: Run tests
         run: composer run test
+
+      - name: Coverage report
+        run: XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-clover coverage.xml
+
+      - name: Upload coverage reports to Codecov
+        run: |
+          # Replace `linux` below with the appropriate OS
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t ${CODECOV_TOKEN}
