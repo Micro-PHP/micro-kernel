@@ -46,11 +46,20 @@ class KernelTest extends TestCase
 
         $this->kernel = new Kernel(
             $plugins,
-            $bootLoaders,
+            [],
             $this->container,
         );
 
+        $this->kernel->setBootLoaders($bootLoaders);
+        $this->kernel->addBootLoader($this->createMock(PluginBootLoaderInterface::class));
+
         $this->kernel->run();
+    }
+
+    public function testExceptionWhenTryBootloaderInstallAfterKernelRun()
+    {
+        $this->expectException(\LogicException::class);
+        $this->kernel->addBootLoader($this->createMock(PluginBootLoaderInterface::class));
     }
 
     public function testKernelPlugins()

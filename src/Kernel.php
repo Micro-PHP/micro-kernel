@@ -34,13 +34,35 @@ class Kernel implements KernelInterface
      */
     public function __construct(
         private readonly array $applicationPluginCollection,
-        private readonly iterable $pluginBootLoaderCollection,
+        private array $pluginBootLoaderCollection,
         private readonly Container $container
     ) {
         $this->isStarted = false;
 
         $this->pluginsLoaded = [];
         $this->plugins = [];
+    }
+
+    public function addBootLoader(PluginBootLoaderInterface $bootLoader): self
+    {
+        if ($this->isStarted) {
+            throw new \LogicException('Bootloaders must be installed before starting the kernel.');
+        }
+
+        $this->pluginBootLoaderCollection[] = $bootLoader;
+
+        return $this;
+    }
+
+    public function setBootLoaders(iterable $bootLoaders): self
+    {
+        $this->pluginBootLoaderCollection = [];
+
+        foreach ($bootLoaders as $loader) {
+            $this->addBootLoader($loader);
+        }
+
+        return $this;
     }
 
     /**
