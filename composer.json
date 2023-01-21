@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "micro/dependency-injection": "^1"
+        "micro/dependency-injection": "^1.6"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.29",
