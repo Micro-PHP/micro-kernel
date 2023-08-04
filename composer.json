@@ -11,20 +11,18 @@
     ],
     "require": {
         "php": "^8.2",
-        "micro/dependency-injection": "^1.6"
+        "micro/dependency-injection": "^2.0"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.29",
-        "friendsofphp/php-cs-fixer": "^3.13",
-        "phpstan/phpstan": "^1.9",
-        "phpunit/php-code-coverage": "^9.2",
-        "phpunit/phpunit": "^9.5",
-        "vimeo/psalm": "^5.2"
+        "ergebnis/composer-normalize": "^2.34"
     },
     "autoload": {
         "psr-4": {
             "Micro\\Framework\\Kernel\\": "/"
-        }
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "config": {
         "allow-plugins": {
@@ -32,24 +30,5 @@
         },
         "sort-packages": true
     },
-    "scripts": {
-        "coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-text",
-        "coverage-html": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html ./test-coverage-report",
-        "php-cs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --verbose --using-cache=no",
-        "php-cs-try": "PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --verbose --dry-run --using-cache=no",
-        "phpstan": "./vendor/bin/phpstan analyze --no-progress",
-        "phpunit": "./vendor/bin/phpunit",
-        "psalm": "./vendor/bin/psalm --no-progress --show-info=true --no-cache",
-        "statics": [
-            "@phpstan",
-            "@psalm",
-            "@php-cs-try"
-        ],
-        "test": [
-            "@statics",
-            "composer validate --strict",
-            "composer normalize",
-            "@coverage"
-        ]
-    }
+    "minimum-stability": "dev"
 }

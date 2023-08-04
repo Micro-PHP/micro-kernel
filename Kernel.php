@@ -11,7 +11,7 @@
 
 namespace Micro\Framework\Kernel;
 
-use Micro\Component\DependencyInjection\Container;
+use Micro\Framework\DependencyInjection\Container;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 
 class Kernel implements KernelInterface

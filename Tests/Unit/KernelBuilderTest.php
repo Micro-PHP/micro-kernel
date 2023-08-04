@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Micro\Framework\Kernel\Tests\Unit;
 
-use Micro\Component\DependencyInjection\Container;
+use Micro\Framework\DependencyInjection\Container;
 use Micro\Framework\Kernel\KernelBuilder;
 use Micro\Framework\Kernel\KernelInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
