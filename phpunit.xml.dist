@@ -33,4 +33,9 @@
             <html outputDirectory="test-coverage-report/" />
         </report>
     </coverage>
+
+    <logging>
+        <log type="coverage-clover" target="coverage/clover.xml"/>
+    </logging>
+
 </phpunit>

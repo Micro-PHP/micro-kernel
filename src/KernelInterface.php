@@ -12,6 +12,7 @@
 namespace Micro\Framework\Kernel;
 
 use Micro\Component\DependencyInjection\Container;
+use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 
 /**
  * The kernel is needed for plugin management. A plugin can be any class object.
@@ -24,6 +25,18 @@ interface KernelInterface
      * @api
      */
     public function container(): Container;
+
+    /**
+     * @throws \RuntimeException
+     */
+    public function addBootLoader(PluginBootLoaderInterface $bootLoader): self;
+
+    /**
+     * @param iterable<PluginBootLoaderInterface> $bootLoaders
+     *
+     * @throws \RuntimeException
+     */
+    public function setBootLoaders(iterable $bootLoaders): self;
 
     /**
      * Run application.
