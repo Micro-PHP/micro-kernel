@@ -14,13 +14,15 @@
         "micro/dependency-injection": "^1.6"
     },
     "require-dev": {
-        "ergebnis/composer-normalize": "^2.29",
-        "friendsofphp/php-cs-fixer": "^3.13",
-        "phpstan/phpstan": "^1.9",
-        "phpunit/php-code-coverage": "^9.2",
-        "phpunit/phpunit": "^9.5",
-        "vimeo/psalm": "^5.2"
+        "micro/dev-tools": "dev-feature/library-created"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:Micro-PHP/dev-tools.git"
+        }
+    ],
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Micro\\Framework\\Kernel\\": "src/"
@@ -40,11 +42,11 @@
     "scripts": {
         "coverage": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-text",
         "coverage-html": "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html ./test-coverage-report",
-        "php-cs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --verbose --using-cache=no",
-        "php-cs-try": "PHP_CS_FIXER_IGNORE_ENV=1 ./vendor/bin/php-cs-fixer fix --verbose --dry-run --using-cache=no",
-        "phpstan": "./vendor/bin/phpstan analyze --no-progress",
         "phpunit": "./vendor/bin/phpunit",
-        "psalm": "./vendor/bin/psalm --no-progress --show-info=true --no-cache",
+        "php-cs-fix": "./vendor/micro/dev-tools/tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --verbose --using-cache=no",
+        "php-cs-try": "./vendor/micro/dev-tools/tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --verbose --dry-run --using-cache=no",
+        "phpstan": "./vendor/micro/dev-tools/tools/phpstan/vendor/bin/phpstan analyze --no-progress",
+        "psalm": "./vendor/micro/dev-tools/tools/psalm/vendor/bin/psalm --no-progress --show-info=true --no-cache",
         "statics": [
             "@phpstan",
             "@psalm",

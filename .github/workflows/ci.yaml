@@ -29,20 +29,28 @@ jobs:
             dependency-versions: 'highest'
 
     steps:
-      - name: "Checkout code"
-        uses: "actions/checkout@v2"
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: "Install PHP"
-        uses: "shivammathur/setup-php@v2"
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
         with:
-          coverage: "none"
-          php-version: "${{ matrix.php-version }}"
+          coverage: none
+          php-version: ${{ matrix.php-version }}
 
-      - name: "Composer install"
-        uses: "ramsey/composer-install@v2"
+      - name: Composer install
+        uses: ramsey/composer-install@v2
         with:
-          dependency-versions: "${{ matrix.dependency-versions }}"
-          composer-options: "--prefer-dist --no-progress"
+          dependency-versions: ${{ matrix.dependency-versions }}
+          composer-options: --prefer-dist --no-progress
+
+      - name: Test tools install
+        run: |
+          cd vendor/micro/dev-tools/tools/psalm; composer install; cd ../../../../..;
+          cd vendor/micro/dev-tools/tools/phpstan; composer install; cd ../../../../..;
+          cd vendor/micro/dev-tools/tools/php-cs-fixer; composer install; cd ../../../../..;
+          cd vendor/micro/dev-tools/tools/phpcs; composer install; cd ../../../../..;
+          cd vendor/micro/dev-tools/tools/phpmd; composer install; cd ../../../../..;
 
       - name: Run tests
         run: composer run test
