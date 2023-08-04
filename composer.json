@@ -23,12 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Micro\\Framework\\Kernel\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Micro\\Framework\\Kernel\\Test\\Unit\\": "tests/Unit"
+            "Micro\\Framework\\Kernel\\": "/"
         }
     },
     "config": {

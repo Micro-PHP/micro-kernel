@@ -11,7 +11,7 @@ declare(strict_types=1);
  *  file that was distributed with this source code.
  */
 
-namespace Micro\Framework\Kernel\Test\Unit;
+namespace Micro\Framework\Kernel\Tests\Unit;
 
 use Micro\Component\DependencyInjection\Container;
 use Micro\Framework\Kernel\Kernel;
