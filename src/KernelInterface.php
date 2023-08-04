@@ -56,7 +56,6 @@ interface KernelInterface
      * @template T of object
      *
      * @psalm-param class-string<T>|null $interfaceInherited if empty, each connected plugin will be iterated
-
      *
      * @return \Traversable<T|object> Application plugins iterator
      *

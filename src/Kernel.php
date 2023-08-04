@@ -65,9 +65,6 @@ class Kernel implements KernelInterface
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function run(): void
     {
         if ($this->isStarted) {
@@ -78,17 +75,11 @@ class Kernel implements KernelInterface
         $this->isStarted = true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function container(): Container
     {
         return $this->container;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function loadPlugin(string $applicationPluginClass): void
     {
         if (\in_array($applicationPluginClass, $this->pluginsLoaded, true)) {
@@ -105,9 +96,6 @@ class Kernel implements KernelInterface
         $this->pluginsLoaded[] = $applicationPluginClass;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function plugins(string $interfaceInherited = null): \Traversable
     {
         foreach ($this->plugins as $plugin) {
