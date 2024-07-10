@@ -46,21 +46,20 @@ interface KernelInterface
     public function run(): void;
 
     /**
-     * @param class-string $applicationPluginClass
+     * @param class-string $pluginClass
      */
-    public function loadPlugin(string $applicationPluginClass): void;
+    public function loadPlugin(string $pluginClass): void;
 
     /**
      * Iterate plugins with the specified type.
      *
      * @template T of object
      *
-     * @psalm-param class-string<T>|null $interfaceInherited if empty, each connected plugin will be iterated
-
-     *
+     * @psalm-param class-string<T>|null $pluginInterface if empty, each connected plugin will be iterated
+ *
      * @return \Traversable<T|object> Application plugins iterator
      *
      * @api
      */
-    public function plugins(string $interfaceInherited = null): \Traversable;
+    public function plugins(string $pluginInterface = null): \Traversable;
 }

@@ -29,5 +29,5 @@ interface PluginBootLoaderInterface
      *
      * @api
      */
-    public function boot(object $applicationPlugin): void;
+    public function boot(object $plugin): void;
 }

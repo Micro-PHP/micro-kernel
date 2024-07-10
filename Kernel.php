@@ -19,27 +19,20 @@ class Kernel implements KernelInterface
     private bool $isStarted;
 
     /**
-     * @var object[]
+     * @var array<class-string, object>
      */
     private array $plugins;
 
     /**
-     * @var class-string[]
-     */
-    private array $pluginsLoaded;
-
-    /**
-     * @param class-string[]              $applicationPluginCollection
+     * @param class-string[]              $pluginCollection
      * @param PluginBootLoaderInterface[] $pluginBootLoaderCollection
      */
     public function __construct(
-        private readonly array $applicationPluginCollection,
+        private readonly array $pluginCollection,
         private array $pluginBootLoaderCollection,
         private readonly Container $container
     ) {
         $this->isStarted = false;
-
-        $this->pluginsLoaded = [];
         $this->plugins = [];
     }
 
@@ -89,29 +82,28 @@ class Kernel implements KernelInterface
     /**
      * {@inheritDoc}
      */
-    public function loadPlugin(string $applicationPluginClass): void
+    public function loadPlugin(string $pluginClass): void
     {
-        if (\in_array($applicationPluginClass, $this->pluginsLoaded, true)) {
+        if (\array_key_exists($pluginClass, $this->plugins)) {
             return;
         }
 
-        $plugin = new $applicationPluginClass();
+        $plugin = new $pluginClass();
 
         foreach ($this->pluginBootLoaderCollection as $bootLoader) {
             $bootLoader->boot($plugin);
         }
 
-        $this->plugins[] = $plugin;
-        $this->pluginsLoaded[] = $applicationPluginClass;
+        $this->plugins[$pluginClass] = $plugin;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function plugins(string $interfaceInherited = null): \Traversable
+    public function plugins(string $pluginInterface = null): \Traversable
     {
         foreach ($this->plugins as $plugin) {
-            if (!$interfaceInherited || ($plugin instanceof $interfaceInherited)) {
+            if (!$pluginInterface || ($plugin instanceof $pluginInterface)) {
                 yield $plugin;
             }
         }
@@ -119,8 +111,8 @@ class Kernel implements KernelInterface
 
     protected function loadPlugins(): void
     {
-        foreach ($this->applicationPluginCollection as $applicationPlugin) {
-            $this->loadPlugin($applicationPlugin);
+        foreach ($this->pluginCollection as $pluginClass) {
+            $this->loadPlugin($pluginClass);
         }
     }
 }
