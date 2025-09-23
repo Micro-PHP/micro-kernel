@@ -21,7 +21,7 @@ use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 interface KernelInterface
 {
     /**
-     * Application mode (dev, prod, test)
+     * Application mode (dev, prod, test).
      *
      * @psalm-suppress PossiblyUnusedMethod
      */

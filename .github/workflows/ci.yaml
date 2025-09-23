@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         # normal, highest, non-dev installs
-        php-version: [ '8.2' ]
+        php-version: [ '8.4' ]
         dependency-versions: [ 'highest' ]
         include:
           # testing lowest PHP version with the lowest dependencies
@@ -25,7 +25,7 @@ jobs:
   #          dependency-versions: 'lowest'
 
           # testing dev versions with the highest PHP
-          - php-version: '8.2'
+          - php-version: '8.4'
             dependency-versions: 'highest'
 
     steps:
