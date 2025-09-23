@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace Micro\Framework\Kernel\Test\Unit;
 
 use Micro\Component\DependencyInjection\Container;
+use Micro\Framework\Kernel\AppModeEnum;
 use Micro\Framework\Kernel\Kernel;
 use Micro\Framework\Kernel\KernelInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 use PHPUnit\Framework\TestCase;
+
+require_once __DIR__.'/PluginClasses.php';
 
 class KernelTest extends TestCase
 {
@@ -27,10 +30,10 @@ class KernelTest extends TestCase
 
     protected function setUp(): void
     {
-        $plugins = [];
-        for ($i = 0; $i < 3; ++$i) {
-            $plugins[] = \stdClass::class;
-        }
+        $plugins = [
+            \PluginClassHasDependencies::class,
+            \PluginClassDefault::class,
+        ];
 
         $bootLoaders = [];
         for ($i = 0; $i < 3; ++$i) {
@@ -42,12 +45,10 @@ class KernelTest extends TestCase
             $bootLoaders[] = $bootLoader;
         }
 
-        $this->container = new Container();
-
         $this->kernel = new Kernel(
             $plugins,
             [],
-            $this->container,
+            AppModeEnum::TEST,
         );
 
         $this->kernel->setBootLoaders($bootLoaders);
@@ -64,12 +65,8 @@ class KernelTest extends TestCase
 
     public function testKernelPlugins()
     {
-        foreach ($this->kernel->plugins(\stdClass::class) as $plugin) {
-            $this->assertInstanceOf(\stdClass::class, $plugin);
-        }
-
-        foreach ($this->kernel->plugins() as $plugin) {
-            $this->assertInstanceOf(\stdClass::class, $plugin);
+        foreach ($this->kernel->plugins(\PluginClassDefault::class) as $plugin) {
+            $this->assertInstanceOf(\PluginClassDefault::class, $plugin);
         }
     }
 
@@ -81,7 +78,7 @@ class KernelTest extends TestCase
                 [
                     [],
                     [],
-                    new Container(),
+                    AppModeEnum::TEST,
                 ]
             )
             ->onlyMethods([
@@ -95,10 +92,5 @@ class KernelTest extends TestCase
 
         $kernel->run();
         $kernel->run();
-    }
-
-    public function testContainer()
-    {
-        $this->assertEquals($this->container, $this->kernel->container());
     }
 }
