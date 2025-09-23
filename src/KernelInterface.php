@@ -12,6 +12,7 @@
 namespace Micro\Framework\Kernel;
 
 use Micro\Component\DependencyInjection\Container;
+use Micro\Component\DependencyInjection\ContainerInterface;
 use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 
 /**
@@ -20,14 +21,26 @@ use Micro\Framework\Kernel\Plugin\PluginBootLoaderInterface;
 interface KernelInterface
 {
     /**
+     * Application mode (dev, prod, test)
+     *
+     * @psalm-suppress PossiblyUnusedMethod
+     */
+    public function getMode(): AppModeEnum;
+
+    /**
      * Get service Dependency Injection Container.
      *
      * @api
+     *
+     * @psalm-suppress PossiblyUnusedMethod
      */
-    public function container(): Container;
+    public function container(): ContainerInterface;
 
     /**
      * @throws \RuntimeException
+     *
+     * @psalm-suppress PossiblyUnusedMethod
+     * @psalm-suppress PossiblyUnusedReturnValue
      */
     public function addBootLoader(PluginBootLoaderInterface $bootLoader): self;
 
@@ -35,6 +48,9 @@ interface KernelInterface
      * @param iterable<PluginBootLoaderInterface> $bootLoaders
      *
      * @throws \RuntimeException
+     *
+     * @psalm-suppress PossiblyUnusedReturnValue
+     * @psalm-suppress PossiblyUnusedMethod
      */
     public function setBootLoaders(iterable $bootLoaders): self;
 
@@ -56,11 +72,10 @@ interface KernelInterface
      * @template T of object
      *
      * @psalm-param class-string<T>|null $interfaceInherited if empty, each connected plugin will be iterated
-
      *
      * @return \Traversable<T|object> Application plugins iterator
      *
      * @api
      */
-    public function plugins(string $interfaceInherited = null): \Traversable;
+    public function plugins(?string $interfaceInherited = null): \Traversable;
 }

@@ -10,16 +10,9 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "micro/dependency-injection": "^1.6"
-    },
-    "require-dev": {
-        "ergebnis/composer-normalize": "^2.29",
-        "friendsofphp/php-cs-fixer": "^3.13",
-        "phpstan/phpstan": "^1.9",
-        "phpunit/php-code-coverage": "^9.2",
-        "phpunit/phpunit": "^9.5",
-        "vimeo/psalm": "^5.2"
+        "php": "^8.4",
+        "micro/autowire": "^1.6",
+        "micro/dependency-injection": "^1.7"
     },
     "autoload": {
         "psr-4": {
@@ -33,7 +26,8 @@
     },
     "config": {
         "allow-plugins": {
-            "ergebnis/composer-normalize": true
+            "ergebnis/composer-normalize": true,
+            "micro/testing-tool": true
         },
         "sort-packages": true
     },
@@ -56,5 +50,8 @@
             "composer normalize",
             "@coverage"
         ]
+    },
+    "require-dev": {
+        "micro/testing-tool": "^1.7"
     }
 }
